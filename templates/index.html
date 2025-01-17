@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block links %}
+{% load static %}
+
+
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block title %}Главная{% endblock %}
+
+{% block body %}
+
+<div id="container" style="user-select: none;">
+    <form action="{% url 'api_exotic_flowers' %}" method="post">{% csrf_token %}<button>Экзотические цветы</button></form>
+    <form action="{% url 'api_photo_salon' %}" method="post">{% csrf_token %}<button>Фотосалон</button></form>
+    <form action="{% url 'api_production_center' %}" method="post">{% csrf_token %}<button>Продюсерский центр</button></form>
+</div>
+{% endblock %}
