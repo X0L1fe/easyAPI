@@ -30,7 +30,7 @@ def api_exotic_flowers(request):
                     "payment_method": "Credit Card",
                     }
                 }
-            url = "http://127.0.0.1/exotic_flowers/hs/applicationData/get_application/"
+            url = "http://127.0.0.1/diplomWEB/hs/applicationData/get_application/"
             auth = ("", "")  # Логин и пароль
             
             with httpx.Client() as client:
@@ -47,7 +47,7 @@ def api_exotic_flowers(request):
                 )
 
             if response.status_code == 200:
-                messages.success(request, 'Вы успешно подтвердили заявку. Информация отправлена в 1С.')
+                messages.success(request, 'Вы успешно отправили заявку. Информация отправлена в 1С.')
             else:
                 messages.warning(request, f'Заявка подтверждена, но данные в 1С не отправлены. Ошибка: {response.text}')
         except httpx.RequestError as e:
@@ -95,7 +95,11 @@ def api_photo_salon (request):
             else:
                 messages.warning(request, f'Заявка подтверждена, но данные в 1С не отправлены. Ошибка: {response.text}')
         except httpx.RequestError as e:
-            messages.error(request, f'Ошибка при отправке данных в 1С: {str(e)}')
+            messages.error(request, f'Ошибка при отправке данных в 1С: {str(e)}')   
+        return redirect('index')
+    else:
+        messages.error(request, 'Ссылка не рабочая.')
+        return render(request, 'index.html')
 
 def api_production_center(request):
     if request.method == 'POST':
@@ -136,4 +140,8 @@ def api_production_center(request):
             else:
                 messages.warning(request, f'Заявка подтверждена, но данные в 1С не отправлены. Ошибка: {response.text}')
         except httpx.RequestError as e:
-            messages.error(request, f'Ошибка при отправке данных в 1С: {str(e)}')
+            messages.error(request, f'Ошибка при отправке данных в 1С: {str(e)}')   
+        return redirect('index')
+    else:
+        messages.error(request, 'Ссылка не рабочая.')
+        return render(request, 'index.html')
