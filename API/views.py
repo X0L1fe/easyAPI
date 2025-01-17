@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from easyAPI import settings
 from django.http import JsonResponse
@@ -31,7 +31,7 @@ def api_exotic_flowers(request):
                     }
                 }
             url = "http://127.0.0.1/exotic_flowers/hs/applicationData/get_application/"
-            auth = (settings.ONEC_API_USER, settings.ONEC_API_PASSWORD)  # Логин и пароль
+            auth = ("", "")  # Логин и пароль
             
             with httpx.Client() as client:
                 headers = {
@@ -42,7 +42,7 @@ def api_exotic_flowers(request):
                     url,
                     json=data,
                     headers=headers,
-                    auth=(auth[0], auth[1]),  # Авторизация
+                    #auth=(auth[0], auth[1]),  # Авторизация
                     timeout=10  # Таймаут для запроса
                 )
 
@@ -52,6 +52,10 @@ def api_exotic_flowers(request):
                 messages.warning(request, f'Заявка подтверждена, но данные в 1С не отправлены. Ошибка: {response.text}')
         except httpx.RequestError as e:
             messages.error(request, f'Ошибка при отправке данных в 1С: {str(e)}')   
+        return redirect('index')
+    else:
+        messages.error(request, 'Ссылка не рабочая.')
+        return render(request, 'index.html')
 def api_photo_salon (request):
     if request.method == 'POST':
         try:
